@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:expenses/widgets/adaptive_flat_button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -51,9 +55,8 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    
     return SingleChildScrollView(
-          child: Card(
+      child: Card(
         elevation: 2,
         child: Container(
           padding: EdgeInsets.only(
@@ -66,19 +69,35 @@ class _NewTransactionState extends State<NewTransaction> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              TextField(
-                decoration: InputDecoration(labelText: 'Title'),
-                controller: titleTextController,
-                onSubmitted: (_) => submitValue(),
+              Platform.isIOS
+                  ? CupertinoTextField(
+                      placeholder: 'Title',
+                      controller: titleTextController,
+                      onSubmitted: (_) => submitValue(),
+                    )
+                  : TextField(
+                      decoration: InputDecoration(labelText: 'Title'),
+                      controller: titleTextController,
+                      onSubmitted: (_) => submitValue(),
+                    ),
+              SizedBox(
+                height: 5,
               ),
-              TextField(
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  labelText: 'Amount',
-                ),
-                controller: amountTextController,
-                onSubmitted: (_) => submitValue(),
-              ),
+              Platform.isIOS
+                  ? CupertinoTextField(
+                      keyboardType: TextInputType.number,
+                      placeholder: 'Amount',
+                      controller: amountTextController,
+                      onSubmitted: (_) => submitValue(),
+                    )
+                  : TextField(
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: 'Amount',
+                      ),
+                      controller: amountTextController,
+                      onSubmitted: (_) => submitValue(),
+                    ),
               Row(
                 children: <Widget>[
                   Expanded(
@@ -86,24 +105,29 @@ class _NewTransactionState extends State<NewTransaction> {
                           ? 'No date selected!'
                           : 'Picked Date: ' +
                               DateFormat.yMMMEd().format(selectedDate))),
-                  FlatButton(
-                    textColor: Theme.of(context).primaryColor,
-                    onPressed: () => presentDatePicker(context),
-                    child: Text('Choose Date'),
-                  ),
+                  AdaptiveFlatButton(
+                    label: 'Choose Date',
+                    handler: () => presentDatePicker(context),
+                  )
                 ],
               ),
               SizedBox(
                 height: 10,
               ),
-              RaisedButton(
-                color: Theme.of(context).primaryColorDark,
-                child: Text(
-                  'Add Transaction',
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: () => submitValue(),
-              )
+              Platform.isIOS
+                  ? CupertinoButton(
+                      color: Theme.of(context).primaryColor,
+                      child: Text('Add Transaction'),
+                      onPressed: () => submitValue(),
+                    )
+                  : RaisedButton(
+                      color: Theme.of(context).primaryColorDark,
+                      child: Text(
+                        'Add Transaction',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onPressed: () => submitValue(),
+                    )
             ],
           ),
         ),

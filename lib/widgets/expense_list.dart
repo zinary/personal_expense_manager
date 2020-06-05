@@ -15,17 +15,20 @@ class ExpenseList extends StatelessWidget {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text(
-                    'No Expenses currently',
-                    style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
+                
                   Image.asset(
                     'assets/empty1.png',
                     fit: BoxFit.cover,
                     height: constraints.maxHeight * 0.6,
+                  ),
+                    Text(
+                    'No Expenses currently',
+                    style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontSize: 15,
+                        fontFamily: 'OpenSans',
+                        fontWeight: FontWeight.bold)
+                 
                   ),
                 ],
               );

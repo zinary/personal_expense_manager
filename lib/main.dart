@@ -1,5 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/cupertino.dart';
 // import 'package:flutter/services.dart';
 import './widgets/chart.dart';
 import './widgets/expense_list.dart';
@@ -88,16 +90,34 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
-  final appBar = AppBar(
-    title: Text('Expenses'),
-    centerTitle: true,
-    backgroundColor: Colors.purple,
-  );
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    final _isLandscape =
-        mediaQuery.orientation == Orientation.landscape;
+    final _isLandscape = mediaQuery.orientation == Orientation.landscape;
+    final PreferredSizeWidget appBar = Platform.isIOS
+        ? CupertinoNavigationBar(
+          padding: EdgeInsetsDirectional.only(top: 5,bottom: 5),
+            middle: Text('Expenses'),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                GestureDetector(
+                  child: Icon(CupertinoIcons.add,color: Colors.blue,),
+                  onTap: () => _startAddNewTransaction(context),
+                ),
+              ],
+            ))
+        : AppBar(
+            title: Text('Expenses'),
+            centerTitle: true,
+            backgroundColor: Colors.purple,
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () => _startAddNewTransaction(context),
+              ),
+            ],
+          );
     final _transactionListWidget = Container(
       height: (mediaQuery.size.height -
               appBar.preferredSize.height -
@@ -105,56 +125,64 @@ class _HomePageState extends State<HomePage> {
           0.75,
       child: ExpenseList(_userTransactions, _deleteTransaction),
     );
-    return Scaffold(
-      appBar: appBar,
-      body: ListView(
-        children: <Widget>[
-          //show switch if landscape
-          if (_isLandscape)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text('Show Chart'),
-                Switch(
-                    value: _showChart,
-                    onChanged: (val) {
-                      setState(() {
-                        _showChart = val;
-                      });
-                    }),
-              ],
-            ),
-          //if portrait show both chart and txn list
-          if (!_isLandscape)
-            Container(
-              height: (mediaQuery.size.height -
-                      appBar.preferredSize.height -
-                      mediaQuery.padding.top) *
-                  0.25,
-              child: Chart(_recentTransactions),
-            ),
 
-          if (!_isLandscape)
-            _transactionListWidget,
-            //if landscape check for showchart value
-          if (_isLandscape)
-            _showChart
-                ? Container(
-                    height: (mediaQuery.size.height -
-                            appBar.preferredSize.height -
-                            mediaQuery.padding.top) *
-                        0.7,
-                    child: Chart(_recentTransactions),
-                  )
-                : _transactionListWidget
-        ],
-      ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        // backgroundColor: Colors.purple,
-        onPressed: () => _startAddNewTransaction(context),
-      ),
-    );
+    final pageBody = SafeArea(child: Column(
+      children: <Widget>[
+        // CupertinoButton(child: Icon(CupertinoIcons.add),onPressed: null,),
+        //show switch if landscape
+        if (_isLandscape)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text('Show Chart'),
+              Switch.adaptive(
+                  value: _showChart,
+                  onChanged: (val) {
+                    setState(() {
+                      _showChart = val;
+                    });
+                  }),
+            ],
+          ),
+        //if portrait show both chart and txn list
+        if (!_isLandscape)
+          Container(
+            height: (mediaQuery.size.height -
+                    appBar.preferredSize.height -
+                    mediaQuery.padding.top) *
+                0.25,
+            child: Chart(_recentTransactions),
+          ),
+
+        if (!_isLandscape)
+          _transactionListWidget,
+        //if landscape check for showchart value
+        if (_isLandscape)
+          _showChart
+              ? Container(
+                  height: (mediaQuery.size.height -
+                          appBar.preferredSize.height -
+                          mediaQuery.padding.top) *
+                      0.7,
+                  child: Chart(_recentTransactions),
+                )
+              : _transactionListWidget
+      ],
+    )
+    ,) ;
+    return Platform.isIOS
+        ? CupertinoPageScaffold(child: pageBody, navigationBar: appBar)
+        : Scaffold(
+            appBar: appBar,
+            body: pageBody,
+            // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+            floatingActionButton: Platform.isIOS
+                ? Container()
+                : FloatingActionButton(
+                    child: Icon(Icons.add),
+                    // backgroundColor: Colors.purple,
+                    onPressed: () => _startAddNewTransaction(context),
+                  ),
+          );
   }
 }
