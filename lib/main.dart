@@ -1,9 +1,8 @@
+import 'package:flutter/material.dart';
+
 import 'package:expenses/widgets/chart.dart';
 import 'package:expenses/widgets/expense_list.dart';
 import 'package:expenses/widgets/new_transaction.dart';
-
-import 'package:flutter/material.dart';
-
 import 'models/transaction.dart';
 
 void main() {
