@@ -31,7 +31,7 @@ class ChartBar extends StatelessWidget {
             child: Stack(children: [
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.grey[400],
+                  color: Colors.grey[200],
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
@@ -39,7 +39,7 @@ class ChartBar extends StatelessWidget {
                 heightFactor: spentPctgOfTotal,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.purple,
+                    color :   Theme.of(context).accentColor,
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),

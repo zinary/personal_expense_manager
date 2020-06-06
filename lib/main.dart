@@ -21,8 +21,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: HomePage(),
       theme: ThemeData(
-        primarySwatch: Colors.purple,
-        accentColor: Colors.amber,
+        primarySwatch: Colors.red,
+        accentColor: Colors.deepOrange,
         fontFamily: 'OpenSans',
         textTheme: ThemeData.light().textTheme.copyWith(
               headline6: TextStyle(
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
             ),
         appBarTheme: AppBarTheme(
           textTheme: ThemeData.light().textTheme.copyWith(
-                headline6: TextStyle(fontFamily: 'Nunito', fontSize: 25),
+                headline6: TextStyle(fontFamily: 'OpenSans', fontSize: 25,fontWeight: FontWeight.bold),
               ),
         ),
       ),
@@ -146,7 +146,7 @@ class _HomePageState extends State<HomePage> {
         : AppBar(
             title: Text('Expenses'),
             centerTitle: true,
-            backgroundColor: Colors.purple,
+            backgroundColor: Theme.of(context).primaryColor,
             actions: <Widget>[
               IconButton(
                 icon: Icon(Icons.add),
