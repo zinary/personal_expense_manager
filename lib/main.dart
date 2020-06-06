@@ -90,6 +90,42 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
+    List<Widget> _buildLandscapeContent(MediaQueryData mediaQuery,AppBar appBar, Widget _transactionListWidget)
+    {
+      return  [Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text('Show Chart'),
+              Switch.adaptive(
+                  value: _showChart,
+                  onChanged: (val) {
+                    setState(() {
+                      _showChart = val;
+                    });
+                  }),
+
+            ],
+
+          ), _showChart
+              ? Container(
+                  height: (mediaQuery.size.height -
+                          appBar.preferredSize.height -
+                          mediaQuery.padding.top) *
+                      0.7,
+                  child: Chart(_recentTransactions),
+                )
+              : _transactionListWidget];
+    }
+    List<Widget> _buildPortraitContent(MediaQueryData mediaQuery,AppBar appBar,_transactionListWidget){
+      return [ Container(
+            height: (mediaQuery.size.height -
+                    appBar.preferredSize.height -
+                    mediaQuery.padding.top) *
+                0.25,
+            child: Chart(_recentTransactions),
+          )
+          , _transactionListWidget];
+    }
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -128,45 +164,16 @@ class _HomePageState extends State<HomePage> {
 
     final pageBody = SafeArea(child: Column(
       children: <Widget>[
-        // CupertinoButton(child: Icon(CupertinoIcons.add),onPressed: null,),
+        
         //show switch if landscape
-        if (_isLandscape)
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text('Show Chart'),
-              Switch.adaptive(
-                  value: _showChart,
-                  onChanged: (val) {
-                    setState(() {
-                      _showChart = val;
-                    });
-                  }),
-            ],
-          ),
+        if (_isLandscape) ..._buildLandscapeContent(mediaQuery, appBar, _transactionListWidget),
+         
         //if portrait show both chart and txn list
-        if (!_isLandscape)
-          Container(
-            height: (mediaQuery.size.height -
-                    appBar.preferredSize.height -
-                    mediaQuery.padding.top) *
-                0.25,
-            child: Chart(_recentTransactions),
-          ),
+        if (!_isLandscape) ..._buildPortraitContent(mediaQuery, appBar, _transactionListWidget),
+          
 
-        if (!_isLandscape)
-          _transactionListWidget,
-        //if landscape check for showchart value
-        if (_isLandscape)
-          _showChart
-              ? Container(
-                  height: (mediaQuery.size.height -
-                          appBar.preferredSize.height -
-                          mediaQuery.padding.top) *
-                      0.7,
-                  child: Chart(_recentTransactions),
-                )
-              : _transactionListWidget
+      
+         
       ],
     )
     ,) ;

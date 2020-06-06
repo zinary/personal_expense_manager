@@ -1,6 +1,6 @@
 import 'package:expenses/models/transaction.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'expense_item.dart';
 
 class ExpenseList extends StatelessWidget {
   final List<Transaction> _transactions;
@@ -16,7 +16,7 @@ class ExpenseList extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                 
-                  Image.asset(
+                    Image.asset(
                     'assets/empty1.png',
                     fit: BoxFit.cover,
                     height: constraints.maxHeight * 0.6,
@@ -38,44 +38,9 @@ class ExpenseList extends StatelessWidget {
             physics: BouncingScrollPhysics(),
             itemCount: _transactions.length,
             itemBuilder: (ctx, index) {
-              return Card(
-                elevation: 2,
-                margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                child: ListTile(
-                  title: Text(
-                    _transactions[index].title,
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  leading: CircleAvatar(
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: FittedBox(
-                        child: Text(
-                          '₹' + _transactions[index].amount.toStringAsFixed(0),
-                          // style: TextStyle(fontSize: 15),
-                        ),
-                      ),
-                    ),
-                    radius: 30,
-                  ),
-                  subtitle: Text(
-                    DateFormat.yMMMd().format(_transactions[index].date),
-                  ),
-                  trailing: MediaQuery.of(context).size.width > 460
-                      ? FlatButton.icon(
-                        textColor: Theme.of(context).errorColor,
-                          onPressed: () => deleteTxn(_transactions[index].id),
-                          icon: Icon(Icons.delete_sweep, color: Theme.of(context).errorColor,),
-                          label: Text('delete'),
-                        )
-                      : IconButton(
-                          icon: Icon(Icons.delete_sweep),
-                          color: Theme.of(context).errorColor,
-                          onPressed: () => deleteTxn(_transactions[index].id),
-                        ),
-                ),
-              );
+              return ExpenseItem(transaction: _transactions[index], deleteTxn: deleteTxn);
             },
           );
   }
 }
+

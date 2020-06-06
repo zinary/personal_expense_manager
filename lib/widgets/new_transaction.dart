@@ -80,7 +80,7 @@ class _NewTransactionState extends State<NewTransaction> {
                       controller: titleTextController,
                       onSubmitted: (_) => submitValue(),
                     ),
-              SizedBox(
+             const SizedBox(
                 height: 5,
               ),
               Platform.isIOS
@@ -111,7 +111,7 @@ class _NewTransactionState extends State<NewTransaction> {
                   )
                 ],
               ),
-              SizedBox(
+            const  SizedBox(
                 height: 10,
               ),
               Platform.isIOS
