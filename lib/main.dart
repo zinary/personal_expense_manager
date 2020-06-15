@@ -84,6 +84,15 @@ class _HomePageState extends State<HomePage> {
 
   void _startAddNewTransaction(ctx) {
     showModalBottomSheet(
+      elevation: 10,
+      // useRootNavigator:true,
+      // isDismissible: true,
+      // enableDrag: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30)
+      ),),
+      
+     isScrollControlled: true, 
         context: ctx,
         builder: (_) {
           return NewTransaction(_addTransactions);

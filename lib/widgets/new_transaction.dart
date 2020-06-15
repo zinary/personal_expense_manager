@@ -55,82 +55,82 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Card(
-        elevation: 2,
-        child: Container(
-          padding: EdgeInsets.only(
-            top: 10,
-            right: 10,
-            left: 10,
-            bottom: MediaQuery.of(context).viewInsets.bottom + 15,
-            // bottom: 500
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              Platform.isIOS
-                  ? CupertinoTextField(
-                      placeholder: 'Title',
-                      controller: titleTextController,
-                      onSubmitted: (_) => submitValue(),
-                    )
-                  : TextField(
-                      decoration: InputDecoration(labelText: 'Title'),
-                      controller: titleTextController,
-                      onSubmitted: (_) => submitValue(),
-                    ),
-             const SizedBox(
-                height: 5,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SingleChildScrollView(
+              child: Container(
+              padding: EdgeInsets.only(
+              top: 10,
+              right: 10,
+              left: 10,
+              bottom: MediaQuery.of(context).viewInsets.bottom +15,
+              // bottom: 500
               ),
-              Platform.isIOS
-                  ? CupertinoTextField(
-                      keyboardType: TextInputType.number,
-                      placeholder: 'Amount',
-                      controller: amountTextController,
-                      onSubmitted: (_) => submitValue(),
-                    )
-                  : TextField(
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        labelText: 'Amount',
-                      ),
-                      controller: amountTextController,
-                      onSubmitted: (_) => submitValue(),
-                    ),
-              Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                  Expanded(
-                      child: Text(selectedDate == null
-                          ? 'No date selected!'
-                          : 'Picked Date: ' +
-                              DateFormat.yMMMEd().format(selectedDate))),
-                  AdaptiveFlatButton(
-                    label: 'Choose Date',
-                    handler: () => presentDatePicker(context),
-                  )
-                ],
-              ),
-            const  SizedBox(
-                height: 10,
-              ),
-              Platform.isIOS
-                  ? CupertinoButton(
-                      color: Theme.of(context).primaryColor,
-                      child: Text('Add Transaction'),
-                      onPressed: () => submitValue(),
-                    )
-                  : RaisedButton(
-                      color: Theme.of(context).primaryColorDark,
-                      child: Text(
-                        'Add Transaction',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onPressed: () => submitValue(),
-                    )
+          Platform.isIOS
+              ? CupertinoTextField(
+                  placeholder: 'Title',
+                  controller: titleTextController,
+                  onSubmitted: (_) => submitValue(),
+                )
+              : TextField(
+                  decoration: InputDecoration(labelText: 'Title'),
+                  controller: titleTextController,
+                  onSubmitted: (_) => submitValue(),
+                ),
+                 const SizedBox(
+            height: 5,
+          ),
+          Platform.isIOS
+              ? CupertinoTextField(
+                  keyboardType: TextInputType.number,
+                  placeholder: 'Amount',
+                  controller: amountTextController,
+                  onSubmitted: (_) => submitValue(),
+                )
+              : TextField(
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: 'Amount',
+                  ),
+                  controller: amountTextController,
+                  onSubmitted: (_) => submitValue(),
+                ),
+          Row(
+            children: <Widget>[
+              Expanded(
+                  child: Text(selectedDate == null
+                      ? 'No date selected!'
+                      : 'Picked Date: ' +
+                          DateFormat.yMMMEd().format(selectedDate))),
+              AdaptiveFlatButton(
+                label: 'Choose Date',
+                handler: () => presentDatePicker(context),
+              )
             ],
           ),
-        ),
+                const  SizedBox(
+            height: 10,
+          ),
+          Platform.isIOS
+              ? CupertinoButton(
+                  color: Theme.of(context).primaryColor,
+                  child: Text('Add Transaction'),
+                  onPressed: () => submitValue(),
+                )
+              : RaisedButton(
+                  color: Theme.of(context).primaryColorDark,
+                  child: Text(
+                    'Add Transaction',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () => submitValue(),
+                )
+                ],
+              ),
+            ),
       ),
     );
   }
